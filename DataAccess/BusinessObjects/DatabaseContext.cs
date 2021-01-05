@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DataAccess.BusinessObjects.Entities;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.BusinessObjects.Entities;
 
 namespace DataAccess.BusinessObjects
 {
     public class DatabaseContext : DbContext
     {
-        public DatabaseContext() :base("ConnectionString")
+        public DatabaseContext() : base("ConnectionString")
         {
         }
 

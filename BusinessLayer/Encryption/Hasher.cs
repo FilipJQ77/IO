@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Encryption
 {
@@ -15,7 +12,7 @@ namespace BusinessLayer.Encryption
 
         public bool Check(string hash, string password)
         {
-            var parts = hash.Split(new char[] {'.'}, 3);
+            var parts = hash.Split(new char[] { '.' }, 3);
 
             if (parts.Length != 3)
             {

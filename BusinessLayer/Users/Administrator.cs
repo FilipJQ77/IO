@@ -1,9 +1,4 @@
 ﻿using DataAccess.BusinessObjects.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Users
 {
@@ -11,11 +6,13 @@ namespace BusinessLayer.Users
 
     class Administrator : IUser
     {
-
         public User User { get; set; }
-        public bool checkPassword(string password)
+
+        public bool CheckPassword(string password)
         {
-            return new HasherFactory().GetHasher().Check(User.Password, password);
+            return new HasherFactory()
+                .GetHasher()
+                .Check(User.Password, password);
         }
     }
 }

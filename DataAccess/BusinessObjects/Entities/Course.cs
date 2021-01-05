@@ -15,7 +15,7 @@ namespace DataAccess.BusinessObjects.Entities
 
     public class Course
     {
-        [Key] public int Id { get; set; } // trzeba usunąć name
+        [Key] public int Id { get; set; } // todo trzeba usunąć name
         [Required] public string Code { get; set; }
         [Required] public CourseType CourseType { get; set; }
         [Required] public int CourseGroupId { get; set; }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccess.BusinessObjects.Entities;
 using DataAccess.Repositories;
 
@@ -12,7 +9,7 @@ namespace BusinessLayer.Controllers
     using Encryption;
     class UserController
     {
-        LoggedUsers LoggedUsers = LoggedUsers.GetInstance();
+        readonly LoggedUsers LoggedUsers = LoggedUsers.GetInstance();
 
         public (bool, string) LogIn(Dictionary<string, string> data)
         {
@@ -45,16 +42,13 @@ namespace BusinessLayer.Controllers
                 loginUser = new UserFactory().CreateAdmin(user);
             }
 
-            var info = LoggedUsers.LogInUser(loginUser);
+            var (loggedIn, token) = LoggedUsers.LogInUser(loginUser);
 
-            if (info.Item1)
-                return (true, info.Item2);
-
-            return (false, "Użytkownik jest już zalogowany");
-
+            return loggedIn ? (true, token) : (false, "Użytkownik jest już zalogowany");
         }
         public void LogOut(string token)
         {
+            //todo tu w sumie wystarczy użyć loggedusers logout
             throw new NotImplementedException();
         }
 

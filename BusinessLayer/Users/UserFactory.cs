@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.BusinessObjects.Entities;
+﻿using DataAccess.BusinessObjects.Entities;
 
 namespace BusinessLayer.Users
 {
@@ -11,7 +6,7 @@ namespace BusinessLayer.Users
     {
         public IUser CreateStudent(User user, StudentData data)
         {
-            var student = new Student()
+            var student = new Student
             {
                 User = user,
                 StudentData = data,
@@ -22,7 +17,8 @@ namespace BusinessLayer.Users
 
         public IUser CreateAdmin(User user)
         {
-            var admin = new Administrator() { 
+            var admin = new Administrator
+            {
                 User = user,
             };
 

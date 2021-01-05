@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.BusinessObjects.Entities;
+﻿using DataAccess.BusinessObjects.Entities;
 
 namespace BusinessLayer.Users
 {
@@ -11,6 +6,6 @@ namespace BusinessLayer.Users
     {
         User User { get; set; }
 
-        bool checkPassword(string password);
+        bool CheckPassword(string password);
     }
 }

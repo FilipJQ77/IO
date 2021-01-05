@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using DataAccess.BusinessObjects;
+﻿using DataAccess.BusinessObjects;
 
 namespace DataAccess.Repositories
 {
