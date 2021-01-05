@@ -58,6 +58,22 @@
     <Compile Include="BusinessObjects\Entities\Lesson.cs" />
     <Compile Include="BusinessObjects\Entities\StudentData.cs" />
     <Compile Include="BusinessObjects\Entities\User.cs" />
+    <Compile Include="Migrations\202101050106522_Initial3.cs" />
+    <Compile Include="Migrations\202101050106522_Initial3.designer.cs">
+      <DependentUpon>202101050106522_Initial3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101050124072_Initial4.cs" />
+    <Compile Include="Migrations\202101050124072_Initial4.designer.cs">
+      <DependentUpon>202101050124072_Initial4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101051739568_initial5.cs" />
+    <Compile Include="Migrations\202101051739568_initial5.designer.cs">
+      <DependentUpon>202101051739568_initial5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101051830134_Initial6.cs" />
+    <Compile Include="Migrations\202101051830134_Initial6.designer.cs">
+      <DependentUpon>202101051830134_Initial6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Migrations\202101032032062_Initial.cs" />
     <Compile Include="Migrations\202101032032062_Initial.designer.cs">
@@ -82,6 +98,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101032052504_Initial2.resx">
       <DependentUpon>202101032052504_Initial2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101050106522_Initial3.resx">
+      <DependentUpon>202101050106522_Initial3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101050124072_Initial4.resx">
+      <DependentUpon>202101050124072_Initial4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101051739568_initial5.resx">
+      <DependentUpon>202101051739568_initial5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101051830134_Initial6.resx">
+      <DependentUpon>202101051830134_Initial6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

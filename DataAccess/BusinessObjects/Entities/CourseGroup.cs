@@ -11,6 +11,7 @@ namespace DataAccess.BusinessObjects.Entities
         [Required] public int NumberOfEcts { get; set; }
         [Required] public int Semester { get; set; }
         [Required] public int FieldId { get; set; }
+        [Required] public string Name { get; set; } // trzeba dodać
         [ForeignKey("FieldId")] public virtual Field Field { get; set; }
         public virtual List<Course> Courses { get; set; }
     }

@@ -1,33 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess;
-using DataAccess.BusinessObjects.Entities;
-using DataAccess.Repositories;
-
-namespace BusinessLayer
+﻿namespace BusinessLayer
 {
+    using Facade;
+    using System.Collections.Generic;
+    using Controllers; // elo z tym potem
     class Program
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Dupa");
-            var repo = new RepositoryFactory().GetRepository<Field>();
-            var field2 = new Field
+            var facade = new SystemFactory().System;
+            var data = new Dictionary<string, string>()
             {
-                Name = "Cyberbezpieczeństwo"
+                ["login"]= "Student1",
+                ["password"]= "haslo1234",
             };
-            repo.Add(field2);
-            repo.SaveChanges();
-            var kupa = repo.GetOverview();
-            foreach (var field1 in kupa)
-            {
-                Console.WriteLine(field1.Name);
-            }
-
-            Console.WriteLine("Dupsztajn");
+            var returned = facade.LogIn(data);
+            var rank = new UserController().CheckRank(returned.Item2);
+            var rank2 = new UserController().CheckRank("test");
         }
     }
 }

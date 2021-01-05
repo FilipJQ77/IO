@@ -12,7 +12,7 @@ namespace DataAccess.BusinessObjects.Entities
         [Required] public string FirstName { get; set; }
         [Required] public string LastName { get; set; }
         [Required] public int Semester { get; set; }
-        public DateTime RegistrationDate { get; set; }
+        [Column(TypeName = "datetime2")] public DateTime? RegistrationDate { get; set; }
         [Required] public int FieldId { get; set; }
         [ForeignKey("FieldId")] public virtual Field Field { get; set; }
         [Required] public int UserId { get; set; }

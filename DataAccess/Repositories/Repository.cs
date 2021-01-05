@@ -27,24 +27,17 @@ namespace DataAccess.Repositories
 
         public T GetDetail(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _objectSet.FirstOrDefault(predicate);
         }
 
         public void Add(T entity)
         {
-            // _objectSet.Add(entity);
-            DbContext.Fields.Add(entity as Field);
+            _objectSet.Add(entity);
         }
 
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
-        }
-
-
-        public void Update(T entity)
-        {
-            throw new NotImplementedException();
+            _objectSet.Remove(entity);
         }
 
         public void SaveChanges()
