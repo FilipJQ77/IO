@@ -5,11 +5,12 @@ using System.Collections.Generic;
 namespace BusinessLayer.Facade
 {
     using Controllers;
+
     class System : ISystem
     {
         public (bool, string) AddAccount(Dictionary<string, string> data, string token)
         {
-            throw new NotImplementedException();
+            return new UserController().AddAccount(data, token);
         }
 
         public (bool, string) AddCourse(Dictionary<string, string> data, string token)
