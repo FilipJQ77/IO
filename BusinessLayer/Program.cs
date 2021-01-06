@@ -1,9 +1,8 @@
 ﻿using System;
-using BusinessLayer.Seeders;
 
 namespace BusinessLayer
 {
-    using Controllers; // elo z tym potem
+    using Controllers; // todo elo z tym potem
     using Facade;
     using System.Collections.Generic;
 
@@ -17,8 +16,8 @@ namespace BusinessLayer
                 ["login"] = "Student1",
                 ["password"] = "haslo1234",
             };
-            var returned = facade.LogIn(data);
-            var rank = new UserController().CheckRank(returned.Item2);
+            var (_, token) = facade.LogIn(data);
+            var rank = new UserController().CheckRank(token);
             var rank2 = new UserController().CheckRank("test");
             Console.WriteLine($"{rank}, {rank2}");
         }
