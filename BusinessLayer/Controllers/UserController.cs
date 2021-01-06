@@ -48,29 +48,24 @@ namespace BusinessLayer.Controllers
         }
         public void LogOut(string token)
         {
-            //todo tu w sumie wystarczy użyć loggedusers logout
-            throw new NotImplementedException();
+            LoggedUsers.GetInstance().LogOutUser(token);
         }
 
         public (bool, string) AddAccount(Dictionary<string, string> data, string token)
         {
+
             return (false, "");
         }
 
         public (bool, string) AssignRegistrationDate(Dictionary<string, string> data, string token)
         {
-
             return (false, "");
         }
 
         public Rank CheckRank(string token)
         {
             var user = LoggedUsers.GetUser(token);
-            if (user == null)
-            {
-                return Rank.None;
-            }
-            return user.User.Rank;
+            return user != null ? user.User.Rank : Rank.None;
         }
 
         public (bool, string) ValidateUser(Dictionary<string, string> data) {
