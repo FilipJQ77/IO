@@ -56,9 +56,15 @@ namespace BusinessLayer.Controllers
             return (true, "Zmieniono grupę kursów");
         }
 
-        public (bool, string) checkPermissions(IUser user, int courseGroupId)
+        public (bool, string) CheckPermissions(IUser user, int courseGroupId)
         {
-            
+            if (user.User.Rank == Rank.Administrator)
+                return (true, "");
+            if (user.User.Rank == Rank.None)
+                return (false, "Należy się zalogować");
+
+
+
             return (true, "");
         }
     }
