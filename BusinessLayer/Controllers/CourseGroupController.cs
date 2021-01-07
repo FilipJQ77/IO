@@ -75,7 +75,7 @@ namespace BusinessLayer.Controllers
                 return (false, "Nie przydzielono ci jeszcze terminu zapisów");
 
             if (DateTime.Now < studentData.RegistrationDate)
-                return (false, $"Twój termin zapisów wypada dopiero {studentData.RegistrationDate.ToString()}");
+                return (false, $"Twój termin zapisów wypada dopiero {studentData.RegistrationDate}");
 
             return (true, "");
         }

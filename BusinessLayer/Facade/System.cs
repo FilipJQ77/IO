@@ -70,7 +70,7 @@ namespace BusinessLayer.Facade
 
         public void LogOut(string token)
         {
-            throw new NotImplementedException();
+            new UserController().LogOut(token);
         }
 
         public Dictionary<string, string> ShowAccount(Dictionary<string, string> data, string token)
@@ -105,7 +105,7 @@ namespace BusinessLayer.Facade
 
         public Dictionary<string, string> ShowField(Dictionary<string, string> data, string token)
         {
-            return new FieldController().showField(data, token);
+            return new FieldController().ShowField(data, token);
         }
 
         public IEnumerable<Field> ShowFields(string token)

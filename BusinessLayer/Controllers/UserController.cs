@@ -100,7 +100,7 @@ namespace BusinessLayer.Controllers
                 }
                 var studentData = new StudentData
                 {
-                    FieldId = fieldId, //todo test potem
+                    FieldId = fieldId,
                     FirstName = firstName,
                     LastName = lastName,
                     Index = index,

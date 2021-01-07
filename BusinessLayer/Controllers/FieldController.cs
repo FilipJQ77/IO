@@ -10,7 +10,7 @@ namespace BusinessLayer.Controllers
 {
     class FieldController
     {
-        public Dictionary<string, string> showField(Dictionary<string, string> data, string token)
+        public Dictionary<string, string> ShowField(Dictionary<string, string> data, string token)
         {
             if (new UserController().CheckRank(token) != Rank.Administrator)
                 return new Dictionary<string, string>
