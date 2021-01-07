@@ -58,12 +58,24 @@ namespace BusinessLayer.Controllers
 
         public (bool, string) CheckPermissions(IUser user, int courseGroupId)
         {
+            if (user == null)
+                return (false, "Należy się zalogować");
             if (user.User.Rank == Rank.Administrator)
                 return (true, "");
-            if (user.User.Rank == Rank.None)
-                return (false, "Należy się zalogować");
 
+            var studentData = (user as Student).StudentData;
+            var cgRep = new RepositoryFactory().GetRepository<CourseGroup>();
+            var courseGroup = cgRep.GetDetail(p => p.Id == courseGroupId);
+            if (courseGroup == null || courseGroup.FieldId != studentData.FieldId)
+                return (false, "Nie należysz do kierunku wybranej grupy kursów");
+            if (courseGroup.Semester != studentData.Semester)
+                return (false, "Nie należysz do semestru, na którym grupa kursów się odbywa");
 
+            if (studentData.RegistrationDate == null)
+                return (false, "Nie przydzielono ci jeszcze terminu zapisów");
+
+            if (DateTime.Now < studentData.RegistrationDate)
+                return (false, $"Twój termin zapisów wypada dopiero {studentData.RegistrationDate.ToString()}");
 
             return (true, "");
         }

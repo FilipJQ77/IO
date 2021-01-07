@@ -73,7 +73,17 @@ namespace BusinessLayer.Facade
             throw new NotImplementedException();
         }
 
+        public Dictionary<string, string> ShowAccount(Dictionary<string, string> data, string token)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<User> ShowAccounts(string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, string> ShowCourse(Dictionary<string, string> data, string token)
         {
             throw new NotImplementedException();
         }
@@ -93,7 +103,17 @@ namespace BusinessLayer.Facade
             throw new NotImplementedException();
         }
 
+        public Dictionary<string, string> ShowField(Dictionary<string, string> data, string token)
+        {
+            return new FieldController().showField(data, token);
+        }
+
         public IEnumerable<Field> ShowFields(string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, string> ShowLesson(Dictionary<string, string> data, string token)
         {
             throw new NotImplementedException();
         }
