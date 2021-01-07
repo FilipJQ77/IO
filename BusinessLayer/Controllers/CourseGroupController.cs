@@ -54,5 +54,10 @@ namespace BusinessLayer.Controllers
 
             return (true, "Zmieniono grupę kursów");
         }
+
+        public (bool, string) checkPermissions(User user, int courseGroupId)
+        {
+            return (true, "");
+        }
     }
 }
