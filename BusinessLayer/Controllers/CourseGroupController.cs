@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.Users;
 using DataAccess.BusinessObjects.Entities;
 using DataAccess.Repositories;
 
@@ -55,8 +56,9 @@ namespace BusinessLayer.Controllers
             return (true, "Zmieniono grupę kursów");
         }
 
-        public (bool, string) checkPermissions(User user, int courseGroupId)
+        public (bool, string) checkPermissions(IUser user, int courseGroupId)
         {
+            
             return (true, "");
         }
     }
