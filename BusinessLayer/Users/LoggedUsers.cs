@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace BusinessLayer.Users
 {
@@ -25,7 +26,14 @@ namespace BusinessLayer.Users
             if (Users.Any(loggedUser => user.User.Id == loggedUser.Value.User.Id))
                 return (false, "");
 
-            string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+            string token;
+            using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())
+            {
+                byte[] randomBytes = new byte[32];
+                rng.GetBytes(randomBytes);
+
+                token = Convert.ToBase64String(randomBytes);
+            }
             Users.Add(token, user);
             return (true, token);
         }

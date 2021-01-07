@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DataAccess.BusinessObjects.Entities;
 using DataAccess.Repositories;
+using System.Security.Cryptography;
 
 namespace BusinessLayer.Controllers
 {
@@ -10,7 +11,7 @@ namespace BusinessLayer.Controllers
 
     class UserController
     {
-        readonly LoggedUsers LoggedUsers = LoggedUsers.GetInstance();
+        readonly LoggedUsers _loggedUsers = LoggedUsers.GetInstance();
 
         public (bool, string) LogIn(Dictionary<string, string> data)
         {
@@ -43,7 +44,7 @@ namespace BusinessLayer.Controllers
                 loginUser = new UserFactory().CreateAdmin(user);
             }
 
-            var (loggedIn, token) = LoggedUsers.LogInUser(loginUser);
+            var (loggedIn, token) = _loggedUsers.LogInUser(loginUser);
 
             return loggedIn ? (true, token) : (false, "Użytkownik jest już zalogowany");
         }
@@ -57,23 +58,27 @@ namespace BusinessLayer.Controllers
 
         public (bool, string) AddAccount(Dictionary<string, string> data, string token)
         {
-            var loggedUser = LoggedUsers
-                .GetInstance()
-                .GetUser(token);
-
-            if (loggedUser.User.Rank != Rank.Administrator)
-            {
+            if (CheckRank(token) != Rank.Administrator)
                 return (false, "Tylko administrator może dodać nowe konto");
-            }
 
-            if (!Enum.TryParse<Rank>(data["rank"], out var newUserRank)) // parsowanie stringa na enuma
+            if (!Enum.TryParse<Rank>(data["rank"], out var newUserRank) || newUserRank==Rank.None) // parsowanie stringa na enuma
                 return (false, "Niepoprawna ranga nowego użytkownika");
 
             var newLogin = data["login"];
+
+            string password;
+            using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())
+            {
+                byte[] randomBytes = new byte[32];
+                rng.GetBytes(randomBytes);
+
+                password = Convert.ToBase64String(randomBytes);
+            }
+
             var newUser = new User
             {
                 Login = newLogin,
-                Password = new Hasher().Hash("haslo1234")
+                Password = new Hasher().Hash(password),
             };
             var userRepo = new RepositoryFactory().GetRepository<User>();
             userRepo.Add(newUser);
@@ -111,12 +116,32 @@ namespace BusinessLayer.Controllers
 
         public (bool, string) AssignRegistrationDate(Dictionary<string, string> data, string token)
         {
-            return (false, "");
+            if (CheckRank(token) != Rank.Administrator)
+                return (false, "Tylko administrator może dodać nowe konto");
+
+
+            if (!data.ContainsKey("dateStart") || !DateTime.TryParse(data["dateStart"], out DateTime dateStart))
+                return (false, "Nieprawidłowa data rozpoczęcia zapisów");
+            if (!data.ContainsKey("dateEnd") || !DateTime.TryParse(data["dateEnd"], out DateTime dateEnd) || dateEnd < dateStart)
+                return (false, "Nieprawidłowa data zakończenia zapisów");
+
+            var sdRepository = new RepositoryFactory().GetRepository<StudentData>();
+            var studentData = sdRepository.GetOverview();
+            TimeSpan span = dateEnd - dateStart;
+            var random = new Random();
+            foreach (var student in studentData)
+            {
+                student.RegistrationDate =
+                    dateStart + new TimeSpan(0, random.Next(0, (int)span.TotalMinutes), 0);
+            }
+
+            sdRepository.SaveChanges();
+            return (true, "Przydzielono terminy zapisów");
         }
 
         public Rank CheckRank(string token)
         {
-            var user = LoggedUsers.GetUser(token);
+            var user = _loggedUsers.GetUser(token);
             return user != null ? user.User.Rank : Rank.None;
         }
 

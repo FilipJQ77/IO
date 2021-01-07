@@ -11,15 +11,20 @@ namespace BusinessLayer
         public static void Main(string[] args)
         {
             var facade = new SystemFactory().System;
-            var data = new Dictionary<string, string>
+
+            var (_, token) = facade.LogIn(new Dictionary<string, string>
             {
-                ["login"] = "Student1",
+                ["login"] = "Admin",
                 ["password"] = "haslo1234",
-            };
-            var (_, token) = facade.LogIn(data);
-            var rank = new UserController().CheckRank(token);
-            var rank2 = new UserController().CheckRank("test");
-            Console.WriteLine($"{rank}, {rank2}");
+            });
+
+            var(_, message) = facade.AssignRegistrationDate(new Dictionary<string, string>
+            {
+                ["dateStart"] = "02/02/2020 10:00:00",
+                ["dateEnd"] = "02/05/2020 10:00:00",
+            }, token);
+
+            Console.WriteLine(message);
         }
     }
 }

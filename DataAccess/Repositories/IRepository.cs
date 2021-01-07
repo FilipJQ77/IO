@@ -14,6 +14,8 @@ namespace DataAccess.Repositories
 
         void Delete(T entity);
 
+        void Edit(T entity);
+
         void SaveChanges();
     }
 }

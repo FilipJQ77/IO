@@ -39,6 +39,11 @@ namespace DataAccess.Repositories
             _objectSet.Remove(entity);
         }
 
+        public void Edit(T entity)
+        {
+            DbContext.SaveChanges();
+        }
+
         public void SaveChanges()
         {
             DbContext.SaveChanges();

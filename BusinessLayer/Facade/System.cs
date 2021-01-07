@@ -35,7 +35,7 @@ namespace BusinessLayer.Facade
 
         public (bool, string) AssignRegistrationDate(Dictionary<string, string> data, string token)
         {
-            throw new NotImplementedException();
+            return new UserController().AssignRegistrationDate(data, token);
         }
 
         public (bool, string) EditAccount(Dictionary<string, string> data, string token)
@@ -50,7 +50,7 @@ namespace BusinessLayer.Facade
 
         public (bool, string) EditCoursesGroup(Dictionary<string, string> data, string token)
         {
-            throw new NotImplementedException();
+            return new CourseGroupController().EditCoursesGroup(data, token);
         }
 
         public (bool, string) EditField(Dictionary<string, string> data, string token)
