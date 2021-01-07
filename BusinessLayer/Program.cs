@@ -1,4 +1,5 @@
 ﻿using System;
+using BusinessLayer.Users;
 
 namespace BusinessLayer
 {
@@ -18,13 +19,12 @@ namespace BusinessLayer
                 ["password"] = "haslo1234",
             });
 
-            var(_, message) = facade.AssignRegistrationDate(new Dictionary<string, string>
-            {
-                ["dateStart"] = "02/02/2020 10:00:00",
-                ["dateEnd"] = "02/05/2020 10:00:00",
-            }, token);
+            //var (_, message) = new CourseGroupController().CheckPermissions(LoggedUsers.GetInstance().GetUser(token), 1);
 
-            Console.WriteLine(message);
+            var test = facade.ShowField(new Dictionary<string, string>
+            {
+                ["id"] = "1",
+            }, token);
         }
     }
 }
