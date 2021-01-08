@@ -52,7 +52,7 @@ namespace BusinessLayer
                 ["name"]="Analiza matematyczna 4",
             }, tokenAdmin);
 
-            var test = facade.ShowField(new Dictionary<string, string>
+            var (field, message) = facade.ShowField(new Dictionary<string, string>
             {
                 ["id"] = "1",
             }, tokenAdmin);

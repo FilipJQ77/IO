@@ -73,7 +73,7 @@ namespace BusinessLayer.Facade
             new UserController().LogOut(token);
         }
 
-        public Dictionary<string, string> ShowAccount(Dictionary<string, string> data, string token)
+        public (User, string) ShowAccount(Dictionary<string, string> data, string token)
         {
             throw new NotImplementedException();
         }
@@ -83,7 +83,7 @@ namespace BusinessLayer.Facade
             throw new NotImplementedException();
         }
 
-        public Dictionary<string, string> ShowCourse(Dictionary<string, string> data, string token)
+        public (Course, string) ShowCourse(Dictionary<string, string> data, string token)
         {
             throw new NotImplementedException();
         }
@@ -103,7 +103,7 @@ namespace BusinessLayer.Facade
             throw new NotImplementedException();
         }
 
-        public Dictionary<string, string> ShowField(Dictionary<string, string> data, string token)
+        public (Field, string) ShowField(Dictionary<string, string> data, string token)
         {
             return new FieldController().ShowField(data, token);
         }
@@ -113,7 +113,7 @@ namespace BusinessLayer.Facade
             throw new NotImplementedException();
         }
 
-        public Dictionary<string, string> ShowLesson(Dictionary<string, string> data, string token)
+        public (Lesson, string) ShowLesson(Dictionary<string, string> data, string token)
         {
             throw new NotImplementedException();
         }
