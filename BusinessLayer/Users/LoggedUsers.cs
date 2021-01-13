@@ -24,7 +24,7 @@ namespace BusinessLayer.Users
         public (bool, string) LogInUser(IUser user)
         {
             if (Users.Any(loggedUser => user.User.Id == loggedUser.Value.User.Id))
-                return (false, "");
+                return (false, "Użytkownik jest już zalogowany");
 
             string token;
             using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())

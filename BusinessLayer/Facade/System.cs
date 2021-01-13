@@ -130,7 +130,7 @@ namespace BusinessLayer.Facade
 
         public (bool, string) SignToLesson(Dictionary<string, string> data, string token)
         {
-            throw new NotImplementedException();
+            return new LessonController().SignToLesson(data, token);
         }
     }
 }

@@ -53,7 +53,7 @@ namespace BusinessLayer.Controllers
             if (student.Lessons.Any(l => l.Course == course))
                 return (false, "Student jest już zapisany na kurs");
 
-            if (lesson.Space <= 0 || userRank != Rank.Administrator)
+            if (lesson.Space <= 0 && userRank != Rank.Administrator)
                 return (false, "Brak miejsc");
 
             student.Lessons.Add(lesson);
@@ -62,7 +62,7 @@ namespace BusinessLayer.Controllers
             studentRepo.SaveChanges();
             lessonRepo.SaveChanges();
 
-            return (true, $"Zapis na zajęcia udał się");
+            return (true, "Zapis na zajęcia udał się");
         }
     }
 }
