@@ -34,7 +34,21 @@ namespace BusinessLayer
                 ["lessonId"] = "4",
 
             }, tokenStudent);
-            Console.WriteLine(message);
+
+            var (edited, err4) = facade.EditCoursesGroup(new Dictionary<string, string>
+            {
+                ["id"]="1",
+                ["ects"]="29",
+                ["semester"]="6",
+                ["fieldId"]="2",
+                ["code"]="INEK000420",
+                ["name"]="Analiza matematyczna 4",
+            }, tokenAdmin);
+
+            var (field, message) = facade.ShowField(new Dictionary<string, string>
+            {
+                ["id"] = "1",
+            }, tokenAdmin);
         }
     }
 }
