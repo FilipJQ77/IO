@@ -11,9 +11,11 @@ namespace DataAccess.Repositories
             return new Repository<T>(DbContext);
         }
 
-        public static void SetDbContext(DatabaseContext dbContext)
+        public static DatabaseContext SetDbContext(DatabaseContext dbContext)
         {
+            var oldDbContext = DbContext;
             DbContext = dbContext;
+            return oldDbContext;
         }
     }
 }
