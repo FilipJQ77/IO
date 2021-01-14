@@ -11,17 +11,17 @@ namespace BusinessLayer
         {
             var facade = new SystemFactory().System;
 
-            // var (loggedInAdmin, tokenAdmin) = facade.LogIn(new Dictionary<string, string>
-            // {
-            //     ["login"] = "Admin",
-            //     ["password"] = "haslo1234",
-            // });
+            var (loggedInAdmin, tokenAdmin) = facade.LogIn(new Dictionary<string, string>
+            {
+                ["login"] = "Admin",
+                ["password"] = "haslo1234",
+            });
 
-            // facade.AssignRegistrationDate(new Dictionary<string, string>
-            // {
-            //     ["dateStart"] = "2020-01-08 10:00",
-            //     ["dateEnd"] = "2020-01-08 11:00",
-            // }, tokenAdmin);
+            facade.AssignRegistrationDate(new Dictionary<string, string>
+            {
+                ["dateStart"] = "2020-01-08 10:00",
+                ["dateEnd"] = "2020-01-08 11:00",
+            }, tokenAdmin);
 
             var (loggedInStudent, tokenStudent) = facade.LogIn(new Dictionary<string, string>
             {
@@ -45,7 +45,7 @@ namespace BusinessLayer
                 ["name"]="Analiza matematyczna 4",
             }, tokenAdmin);
 
-            var (field, message) = facade.ShowField(new Dictionary<string, string>
+            var (field, message2) = facade.ShowField(new Dictionary<string, string>
             {
                 ["id"] = "1",
             }, tokenAdmin);
