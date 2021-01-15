@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using BusinessLayer.Controllers;
-using BusinessLayer.Facade;
 using BusinessLayer.Users;
 using DataAccess.BusinessObjects;
 using DataAccess.BusinessObjects.Entities;
@@ -202,9 +201,9 @@ namespace BusinessLayer.Tests
             RepositoryFactory.SetDbContext(oldDb);
         }
 
-        // Tworzenie kierunków
+        // Tworzenie grup kursów
         [TestMethod]
-        public void Facade_EditCoursesGroup()
+        public void CourseGroup_EditCoursesGroup()
         {
             var loggedUsers = LoggedUsers.GetInstance();
             var user1 = new UserFactory().CreateAdmin(new User
