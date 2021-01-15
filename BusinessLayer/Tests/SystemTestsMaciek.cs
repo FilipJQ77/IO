@@ -206,26 +206,23 @@ namespace BusinessLayer.Tests
         [TestMethod]
         public void Facade_EditCoursesGroup()
         {
-            var facade = new SystemFactory().System;
-            var student = new User
+            var loggedUsers = LoggedUsers.GetInstance();
+            var user1 = new UserFactory().CreateAdmin(new User
             {
-                Id = 22,
-                Login = "Student",
-                Password = new Encryption.HasherFactory().GetHasher().Hash("Student"),
+                Id = 20,
+                Login = "User1",
+                Password = new Encryption.HasherFactory().GetHasher().Hash("Pass"),
+                Rank = Rank.Administrator
+            });
+            var (_, tokenAdmin) = loggedUsers.LogInUser(user1);
+            var user2 = new UserFactory().CreateStudent(new User
+            {
+                Id = 21,
+                Login = "User2",
+                Password = new Encryption.HasherFactory().GetHasher().Hash("Pass1"),
                 Rank = Rank.Student
-            };
-            var users = new List<User>
-            {
-                new User
-                {
-                    Id = 21,
-                    Login = "Admin",
-                    Password = new Encryption.HasherFactory().GetHasher().Hash("Admin"),
-                    Rank = Rank.Administrator
-                }, student
-            };
-            var studentData = new StudentData {Id = 1, UserId = student.Id, User = student};
-            var studentDatas = new List<StudentData> {studentData};
+            }, new StudentData());
+            var (_, tokenStudent) = loggedUsers.LogInUser(user2);
             var field = new Field {Id = 1, Name = "Inf"};
             var fields = new List<Field> {field};
             var courseGroup = new CourseGroup {Id = 1, Field = field, FieldId = field.Id};
@@ -233,10 +230,6 @@ namespace BusinessLayer.Tests
 
             var mockContext = new Mock<DatabaseContext>();
 
-            var mockSetUsers = CreateNewMockSetWithData(users);
-            mockContext.Setup(m => m.Set<User>()).Returns(mockSetUsers.Object);
-            var mockSetDS = CreateNewMockSetWithData(studentDatas);
-            mockContext.Setup(m => m.Set<StudentData>()).Returns(mockSetDS.Object);
             var mockSetFields = CreateNewMockSetWithData(fields);
             mockContext.Setup(m => m.Set<Field>()).Returns(mockSetFields.Object);
             var mockSetCG = CreateNewMockSetWithData(courseGroups);
@@ -244,17 +237,6 @@ namespace BusinessLayer.Tests
 
             var oldDb = RepositoryFactory.SetDbContext(mockContext.Object);
 
-            // logowanie
-            var (_, tokenAdmin) = facade.LogIn(new Dictionary<string, string>
-            {
-                ["login"] = "Admin",
-                ["password"] = "Admin",
-            });
-            var (_, tokenStudent) = facade.LogIn(new Dictionary<string, string>
-            {
-                ["login"] = "Student",
-                ["password"] = "Student",
-            });
 
             var rightData = new Dictionary<string, string>
             {
@@ -265,57 +247,57 @@ namespace BusinessLayer.Tests
                 ["code"] = "INEK000420",
                 ["name"] = "Analiza matematyczna 4",
             };
-
+            var cgController = new CourseGroupController();
             // nieprawidłowy użytkownik
-            var (result, _) = facade.EditCoursesGroup(rightData, tokenStudent);
+            var (result, _) = cgController.EditCoursesGroup(rightData, tokenStudent);
             Assert.IsFalse(result);
             // niezalogowany użytkownik
-            (result, _) = facade.EditCoursesGroup(rightData, "");
+            (result, _) = cgController.EditCoursesGroup(rightData, "");
             Assert.IsFalse(result);
             // Nieprawidłowe Id grupy kursów
             var badData = new Dictionary<string,string>(rightData);
             badData["id"] = "2";
-            (result, _) = facade.EditCoursesGroup(badData, tokenAdmin);
+            (result, _) = cgController.EditCoursesGroup(badData, tokenAdmin);
             Assert.IsFalse(result);
             // Nieprawidłowe ects
             badData = new Dictionary<string, string>(rightData);
             badData["ects"] = "asd";
-            (result, _) = facade.EditCoursesGroup(badData, tokenAdmin);
+            (result, _) = cgController.EditCoursesGroup(badData, tokenAdmin);
             Assert.IsFalse(result);
             badData = new Dictionary<string, string>(rightData);
             badData["ects"] = "-1";
-            (result, _) = facade.EditCoursesGroup(badData, tokenAdmin);
+            (result, _) = cgController.EditCoursesGroup(badData, tokenAdmin);
             Assert.IsFalse(result);
             // Nieprawidłowy semestr
             badData = new Dictionary<string, string>(rightData);
             badData["semester"] = "asd";
-            (result, _) = facade.EditCoursesGroup(badData, tokenAdmin);
+            (result, _) = cgController.EditCoursesGroup(badData, tokenAdmin);
             Assert.IsFalse(result);
             badData = new Dictionary<string, string>(rightData);
             badData["semester"] = "-1";
-            (result, _) = facade.EditCoursesGroup(badData, tokenAdmin);
+            (result, _) = cgController.EditCoursesGroup(badData, tokenAdmin);
             Assert.IsFalse(result);
             // nieprawidłowy kierunek
             badData = new Dictionary<string, string>(rightData);
             badData["fieldId"] = "asd";
-            (result, _) = facade.EditCoursesGroup(badData, tokenAdmin);
+            (result, _) = cgController.EditCoursesGroup(badData, tokenAdmin);
             Assert.IsFalse(result);
             badData = new Dictionary<string, string>(rightData);
             badData["fieldId"] = "2";
-            (result, _) = facade.EditCoursesGroup(badData, tokenAdmin);
+            (result, _) = cgController.EditCoursesGroup(badData, tokenAdmin);
             Assert.IsFalse(result);
             // pusty kod grupy kursów
             badData = new Dictionary<string, string>(rightData);
             badData["code"] = "";
-            (result, _) = facade.EditCoursesGroup(badData, tokenAdmin);
+            (result, _) = cgController.EditCoursesGroup(badData, tokenAdmin);
             Assert.IsFalse(result);
             // pusta nazwa grupy kursów
             badData = new Dictionary<string, string>(rightData);
             badData["name"] = "";
-            (result, _) = facade.EditCoursesGroup(badData, tokenAdmin);
+            (result, _) = cgController.EditCoursesGroup(badData, tokenAdmin);
             Assert.IsFalse(result);
             // prawidłowe
-            (result, _) = facade.EditCoursesGroup(rightData, tokenAdmin);
+            (result, _) = cgController.EditCoursesGroup(rightData, tokenAdmin);
             Assert.IsTrue(result && courseGroup.Id == Int32.Parse(rightData["id"])
                                  && courseGroup.NumberOfEcts == Int32.Parse(rightData["ects"])
                                  && courseGroup.Semester == Int32.Parse(rightData["semester"])
@@ -323,8 +305,8 @@ namespace BusinessLayer.Tests
                                  && courseGroup.Code == rightData["code"]
                                  && courseGroup.Name == rightData["name"]);
 
-            facade.LogOut(tokenStudent);
-            facade.LogOut(tokenAdmin);
+            loggedUsers.LogOutUser(tokenStudent);
+            loggedUsers.LogOutUser(tokenAdmin);
             RepositoryFactory.SetDbContext(oldDb);
         }
     }
