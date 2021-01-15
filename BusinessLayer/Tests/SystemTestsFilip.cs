@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using BusinessLayer.Facade;
+using BusinessLayer.Controllers;
 using BusinessLayer.Users;
 using DataAccess.BusinessObjects;
 using DataAccess.BusinessObjects.Entities;
@@ -39,8 +39,6 @@ namespace BusinessLayer.Tests
         [TestMethod]
         public void AddAccount_AddAdmin()
         {
-            var facade = new SystemFactory().System;
-
             var users = new List<User>
             {
                 new User
@@ -65,7 +63,9 @@ namespace BusinessLayer.Tests
                 ["password"] = "Admin",
             };
 
-            var (loggedInAdmin, tokenAdmin) = facade.LogIn(loginDict);
+            var userController = new UserController();
+
+            var (loggedInAdmin, tokenAdmin) = userController.LogIn(loginDict);
 
             var newUserDict = new Dictionary<string, string>
             {
@@ -73,8 +73,7 @@ namespace BusinessLayer.Tests
                 ["login"] = "admin123456",
             };
 
-            facade.AddAccount(newUserDict, tokenAdmin);
-            facade.LogOut(tokenAdmin);
+            userController.AddAccount(newUserDict, tokenAdmin);
             mockSet.Verify(
                 m => m.Add(
                     It.Is<User>(u => u.Login == "admin123456" && u.Rank == Rank.Administrator)
@@ -87,12 +86,11 @@ namespace BusinessLayer.Tests
         [TestMethod]
         public void AssignRegistrationDates_AreDatesCorrect()
         {
-            var facade = new SystemFactory().System;
             var users = new List<User>
             {
                 new User
                 {
-                    Id = 1,
+                    Id = 10,
                     Login = "Admin",
                     Password = new Encryption.HasherFactory().GetHasher().Hash("Admin"),
                     Rank = Rank.Administrator
@@ -122,7 +120,9 @@ namespace BusinessLayer.Tests
                 ["password"] = "Admin",
             };
 
-            var (loggedInAdmin, tokenAdmin) = facade.LogIn(loginDict);
+            var userController = new UserController();
+
+            var (loggedInAdmin, tokenAdmin) = userController.LogIn(loginDict);
 
             var registrationDict = new Dictionary<string, string>
             {
@@ -133,10 +133,11 @@ namespace BusinessLayer.Tests
             DateTime.TryParse(registrationDict["dateStart"], out DateTime dateStart);
             DateTime.TryParse(registrationDict["dateEnd"], out DateTime dateEnd);
 
-            facade.AssignRegistrationDate(registrationDict, tokenAdmin);
+            userController.AssignRegistrationDate(registrationDict, tokenAdmin);
             studentDatas = mockStudentDataSet.Object.ToList();
             foreach (var registrationDate in studentDatas.Select(studentData => studentData.RegistrationDate))
             {
+                Console.WriteLine(registrationDate);
                 Assert.IsTrue(dateStart <= registrationDate && registrationDate <= dateEnd);
             }
 
@@ -146,63 +147,153 @@ namespace BusinessLayer.Tests
         [TestMethod]
         public void LoginAdmin_ReturnsTrue()
         {
-            var facade = new SystemFactory().System;
-            var dataDict = new Dictionary<string, string>
+            var users = new List<User>
             {
-                ["login"] = "Admin",
-                ["password"] = "haslo1234",
+                new User
+                {
+                    Id = 2,
+                    Login = "Admin1",
+                    Password = new Encryption.HasherFactory().GetHasher().Hash("Admin1"),
+                    Rank = Rank.Administrator
+                }
             };
 
-            var (loggedInAdmin, tokenAdmin) = facade.LogIn(dataDict);
+            var mockSet = CreateNewMockSetWithData(users);
+            var mockContext = new Mock<DatabaseContext>();
+
+            mockContext.Setup(m => m.Set<User>()).Returns(mockSet.Object);
+
+            var oldDb = RepositoryFactory.SetDbContext(mockContext.Object);
+
+            var loginDict = new Dictionary<string, string>
+            {
+                ["login"] = "Admin1",
+                ["password"] = "Admin1",
+            };
+
+            var (loggedInAdmin, tokenAdmin) = new UserController().LogIn(loginDict);
 
             Assert.IsTrue(loggedInAdmin);
+
+            RepositoryFactory.SetDbContext(oldDb);
         }
 
         [TestMethod]
         public void LoginStudent_ReturnsTrue()
         {
-            var facade = new SystemFactory().System;
-            var dataDict = new Dictionary<string, string>
+            var users = new List<User>
             {
-                ["login"] = "Student1",
-                ["password"] = "haslo1234",
+                new User
+                {
+                    Id = 3,
+                    Login = "Student1",
+                    Password = new Encryption.HasherFactory().GetHasher().Hash("Student1"),
+                    Rank = Rank.Student
+                }
             };
 
-            var (loggedInStudent, tokenStudent) = facade.LogIn(dataDict);
+            var studentDatas = new List<StudentData>
+            {
+                new StudentData
+                {
+                    UserId = 1
+                }
+            };
+
+            var mockUserSet = CreateNewMockSetWithData(users);
+            var mockStudentDataSet = CreateNewMockSetWithData(studentDatas);
+            var mockContext = new Mock<DatabaseContext>();
+
+            mockContext.Setup(m => m.Set<User>()).Returns(mockUserSet.Object);
+            mockContext.Setup(m => m.Set<StudentData>()).Returns(mockStudentDataSet.Object);
+
+            var oldDb = RepositoryFactory.SetDbContext(mockContext.Object);
+
+            var loginDict = new Dictionary<string, string>
+            {
+                ["login"] = "Student1",
+                ["password"] = "Student1",
+            };
+
+            var (loggedInStudent, tokenStudent) = new UserController().LogIn(loginDict);
 
             Assert.IsTrue(loggedInStudent);
+
+            RepositoryFactory.SetDbContext(oldDb);
         }
 
         [TestMethod]
         public void LoginNonExistingUser_ReturnsFalse()
         {
-            var facade = new SystemFactory().System;
-            var dataDict = new Dictionary<string, string>
+            var users = new List<User>
+            {
+                new User
+                {
+                    Id = 1,
+                    Login = "Admin",
+                    Password = new Encryption.HasherFactory().GetHasher().Hash("Admin"),
+                    Rank = Rank.Administrator
+                }
+            };
+
+            var mockSet = CreateNewMockSetWithData(users);
+            var mockContext = new Mock<DatabaseContext>();
+
+            mockContext.Setup(m => m.Set<User>()).Returns(mockSet.Object);
+
+            var oldDb = RepositoryFactory.SetDbContext(mockContext.Object);
+
+            var loginDict = new Dictionary<string, string>
             {
                 ["login"] = "",
                 ["password"] = "",
             };
 
-            var (loggedIn, token) = facade.LogIn(dataDict);
+            var (loggedIn, token) = new UserController().LogIn(loginDict);
 
             Assert.IsFalse(loggedIn);
+
+            RepositoryFactory.SetDbContext(oldDb);
         }
 
         [TestMethod]
         public void LogoutUser_UserNotInLoggedUsers()
         {
-            var facade = new SystemFactory().System;
-            var dataDict = new Dictionary<string, string>
+            var users = new List<User>
             {
-                ["login"] = "Student1",
-                ["password"] = "haslo1234",
+                new User
+                {
+                    Id = 1,
+                    Login = "Admin",
+                    Password = new Encryption.HasherFactory().GetHasher().Hash("Admin"),
+                    Rank = Rank.Administrator
+                }
             };
 
-            var (loggedInStudent, tokenStudent) = facade.LogIn(dataDict);
-            facade.LogOut(tokenStudent);
-            var user = LoggedUsers.GetInstance().GetUser(tokenStudent);
+            var mockSet = CreateNewMockSetWithData(users);
+            var mockContext = new Mock<DatabaseContext>();
+
+            mockContext.Setup(m => m.Set<User>()).Returns(mockSet.Object);
+
+            var oldDb = RepositoryFactory.SetDbContext(mockContext.Object);
+
+            var loginDict = new Dictionary<string, string>
+            {
+                ["login"] = "Admin",
+                ["password"] = "Admin",
+            };
+
+            var userController = new UserController();
+
+            var (loggedInAdmin, tokenAdmin) = userController.LogIn(loginDict);
+
+            userController.LogOut(tokenAdmin);
+
+            var user = LoggedUsers.GetInstance().GetUser(tokenAdmin);
 
             Assert.IsTrue(user == null);
+
+            RepositoryFactory.SetDbContext(oldDb);
         }
     }
 }

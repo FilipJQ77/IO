@@ -11,7 +11,7 @@ namespace BusinessLayer.Controllers
 
     class UserController
     {
-        readonly LoggedUsers _loggedUsers = LoggedUsers.GetInstance();
+        private readonly LoggedUsers _loggedUsers = LoggedUsers.GetInstance();
 
         public (bool, string) LogIn(Dictionary<string, string> data)
         {
