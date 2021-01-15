@@ -144,10 +144,5 @@ namespace BusinessLayer.Controllers
             var user = _loggedUsers.GetUser(token);
             return user != null ? user.User.Rank : Rank.None;
         }
-
-        public (bool, string) ValidateUser(Dictionary<string, string> data)
-        {
-            return (false, "");
-        }
     }
 }
