@@ -9,19 +9,26 @@ namespace BusinessLayer.Tests.fitnesse
         public string Password;
         public string Comment;
 
+        private string lastMessage = "";
+
         public bool LoginUser()
         {
             var system = new SystemFactory().System;
 
-            var (passed, token) = system.LogIn(new Dictionary<string, string>
+            var (passed, ms) = system.LogIn(new Dictionary<string, string>
             {
                 ["login"] = Login,
                 ["password"] = Password,
             });
 
-            
+            lastMessage = ms;
 
             return passed;
+        }
+
+        public string getLastMessage()
+        {
+            return lastMessage;
         }
     }
 }

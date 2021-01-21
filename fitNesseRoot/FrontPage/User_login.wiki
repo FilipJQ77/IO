@@ -5,13 +5,17 @@ Test
 !define TEST_RUNNER {..\packages\FitSharp.2.8.2\lib\net462\Runner.exe}
 !path "..\BusinessLayer\bin\Release\BusinessLayer.exe"
 
+
 !|ActionFixture|
 |start|BusinessLayer.Tests.fitnesse.MockFitness|
-|enter|MockUser|[{"Id": 1,"Login": "Admin","Password": "Pass","Rank": 1},{"Id": 2,"Login": "Student","Password": "Pass","Rank": 2}]|
+|enter|MockUser|[{"Id": 1,"Login": "Admin","Password": "Pass","Rank": 0},{"Id": 2,"Login": "Student","Password": "Pass","Rank": 1}]|
 |enter|MockStudentData|[{"Id": 1,"UserId": 2}]|
 |press|SetMock|
 
 !|BusinessLayer.Tests.fitnesse.LoginTest|
-|Login|Password|LoginUser?|Comment|
-|Admin|Pass|True|asdasd|
-|Admin|Pass|False|asdasd|
+|Login|Password|LoginUser?|getLastMessage|#Comment|
+|Admin|Pass|True||Pomyślne zalogowanie administratora|
+|Admin|Pass|False||Logowanie drugi raz tego samego użytkownika|
+|Student|Pass|True||Pomyślne zalogowanie studenta|
+|Student|Pass|False||Logowanie drugi raz tego samego użytkownika|
+|Asd|Asd|False||Użytkownik nie istnieje|
