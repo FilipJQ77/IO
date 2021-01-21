@@ -13,7 +13,7 @@ namespace BusinessLayer.Tests.fitnesse
     {
         Mock<DatabaseContext> mockContext = new Mock<DatabaseContext>();
 
-        Mock<DbSet<T>> CreateNewMockSetWithData<T>(List<T> dataSource = null) where T : class
+        static Mock<DbSet<T>> CreateNewMockSetWithData<T>(List<T> dataSource = null) where T : class
         {
             var data = dataSource ?? new List<T>();
             var queryable = data.AsQueryable();
@@ -40,9 +40,10 @@ namespace BusinessLayer.Tests.fitnesse
 
         public void MockUser(string data)
         {
-            var users = JsonConvert.DeserializeObject < List < User >> (data);
+            var users = JsonConvert.DeserializeObject<List<User>>(data);
 
-            foreach(var user in users){
+            foreach (var user in users)
+            {
                 user.Password = new Encryption.HasherFactory().GetHasher().Hash(user.Password);
             }
 
@@ -56,6 +57,19 @@ namespace BusinessLayer.Tests.fitnesse
 
             var mockSetUsers = CreateNewMockSetWithData(users);
             mockContext.Setup(m => m.Set<StudentData>()).Returns(mockSetUsers.Object);
+        }
+
+        public void MockField()
+        {
+            var fields = new List<Field>
+            {
+                new Field
+                {
+                    Id = 1
+                }
+            };
+            var mockSetFields = CreateNewMockSetWithData(fields);
+            mockContext.Setup(m => m.Set<Field>()).Returns(mockSetFields.Object);
         }
     }
 }

@@ -19,8 +19,6 @@ namespace BusinessLayer.Tests.fitnesse
                 ["password"] = Password,
             });
 
-            
-
             return passed;
         }
     }
