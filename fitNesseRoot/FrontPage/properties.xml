@@ -2,12 +2,9 @@
 <properties>
 <AddChild/>
 <Edit/>
-<Files/>
 <Properties/>
-<Prune/>
-<RecentChanges/>
-<Search/>
-<Test/>
+<Refactor/>
+<Static/>
 <Versions/>
 <WhereUsed/>
 </properties>
