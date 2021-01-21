@@ -55,6 +55,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="fit, Version=2.8.7660.39260, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FitSharp.2.8.2\lib\net462\fit.dll</HintPath>
+    </Reference>
+    <Reference Include="fitSharp, Version=2.8.7660.39259, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FitSharp.2.8.2\lib\net462\fitSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.2.1.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -95,6 +101,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seeders\Seeder.cs" />
+    <Compile Include="Tests\fitnesse\Test.cs" />
     <Compile Include="Tests\SystemTestsFilip.cs" />
     <Compile Include="Tests\SystemTestsMaciek.cs" />
     <Compile Include="Users\Administrator.cs" />
