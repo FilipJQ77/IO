@@ -2,7 +2,13 @@
 !define TEST_RUNNER {..\packages\FitSharp.2.8.2\lib\net462\Runner.exe}
 !path "..\BusinessLayer\bin\Release\BusinessLayer.exe"
 
-!|BusinessLayer.Tests.fitnesse.ColumnFixtureTest|
-|firstPart|secondPart|XD|together?|totalLength?|
-|Hello|World|kutas|Hello, World, kutas|15|
-|Houston|We Have a Problem|Houston, We Have a Problem|24|
+!|ActionFixture|
+|start|BusinessLayer.Tests.fitnesse.MockFitness|
+|enter|MockUser|[{"Id": 1,"Login": "Admin","Password": "Pass","Rank": 1},{"Id": 2,"Login": "Student","Password": "Pass","Rank": 2}]|
+|enter|MockStudentData|[{"Id": 1,"UserId": 2}]|
+|press|SetMock|
+
+!|BusinessLayer.Tests.fitnesse.LoginTest|
+|Login|Password|LoginUser?|Comment|
+|Admin|Pass|True|asdasd|
+|Admin|Pass|False|asdasd|
