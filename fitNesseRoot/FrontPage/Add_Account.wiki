@@ -7,11 +7,19 @@ Test
 
 !|ActionFixture|
 |start|BusinessLayer.Tests.fitnesse.MockFitness|
-|enter|MockUser|[{"Id": 1,"Login": "Admin","Password": "Pass","Rank": 1},{"Id": 2,"Login": "Student","Password": "Pass","Rank": 2}]|
+|enter|MockUser|[{"Id": 68,"Login": "Admin","Password": "Pass1","Rank": 0},{"Id": 2,"Login": "Student","Password": "Pass","Rank": 1}]|
 |enter|MockStudentData|[{"Id": 1,"UserId": 2}]|
+|enter|MockField|[{"Id": 1}]|
 |press|SetMock|
 
-!|BusinessLayer.Tests.fitnesse.LoginTest|
-|Login|Password|LoginUser?|Comment|
-|Admin|Pass|True|asdasd|
-|Admin|Pass|False|asdasd|
+!|BusinessLayer.Tests.fitnesse.AddAccountAdminTest|
+|Login|Rank|AddAccountAdmin?|Comment|
+|Admin11|Administrator|True|Dodanie prawidłowego konta|
+|Admin|Administrator|False|Login już użyty|
+|Adminn|Student|False|Zła ranga|
+
+!|BusinessLayer.Tests.fitnesse.AddAccountStudentTest|
+|Login|Rank|FirstName|LastName|Index|FieldId|Semester|AddAccountStudent?|Comment|
+|Student1|Student|J|K|212121|1|7|True|Dodanie prawidłowego konta|
+|Student1|Student|JA|KA|211121|1|7|False|Login już użyty|
+|Student2|Student|JB|KB|213121|2|7|False|Niepoprawne ID kierunku|

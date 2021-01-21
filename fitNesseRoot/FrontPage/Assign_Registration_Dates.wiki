@@ -1,0 +1,19 @@
+---
+Test
+---
+!define COMMAND_PATTERN {%m -r fitnesse.fitserver.FitServer,"..\packages\FitSharp.2.8.2\lib\net462\fit.dll" %p}
+!define TEST_RUNNER {..\packages\FitSharp.2.8.2\lib\net462\Runner.exe}
+!path "..\BusinessLayer\bin\Release\BusinessLayer.exe"
+
+!|ActionFixture|
+|start|BusinessLayer.Tests.fitnesse.MockFitness|
+|enter|MockUser|[{"Id": 70,"Login": "Admin","Password": "Pass1","Rank": 0},{"Id": 2,"Login": "Student","Password": "Pass","Rank": 1}]|
+|enter|MockStudentData|[{"Id": 1,"UserId": 2},{"Id": 2,"UserId": 3},{"Id": 3,"UserId": 4},{"Id": 4,"UserId": 5},{"Id": 5,"UserId": 6},{"Id": 6,"UserId": 7},{"Id": 7,"UserId": 8},{"Id": 8,"UserId": 9}]|
+|enter|MockField|[{"Id": 1}]|
+|press|SetMock|
+
+!|BusinessLayer.Tests.fitnesse.AssignRegistrationDatesTest|
+|DateStart|DateEnd|AssignRegistrationDates?|Comment|
+|2020-01-08 10:00|2020-01-08 11:00|True|Poprawne daty|
+|2020-01-08 10:00|2020-01-08 10:00|True|Inne poprawne daty - przypadek krańcowy|
+|2020-01-08 10:00|2020-01-08 9:00|False|Niepoprawne daty|

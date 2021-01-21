@@ -104,6 +104,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seeders\Seeder.cs" />
+    <Compile Include="Tests\fitnesse\AddAccountAdminTest.cs" />
+    <Compile Include="Tests\fitnesse\AddAccountStudentTest.cs" />
+    <Compile Include="Tests\fitnesse\AssignRegistrationDatesTest.cs" />
+    <Compile Include="Tests\fitnesse\EditCourseGroupTest.cs" />
     <Compile Include="Tests\fitnesse\LoginTest.cs" />
     <Compile Include="Tests\fitnesse\MockFitness.cs" />
     <Compile Include="Tests\SystemTestsFilip.cs" />

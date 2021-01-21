@@ -1,0 +1,29 @@
+---
+Test
+---
+!define COMMAND_PATTERN {%m -r fitnesse.fitserver.FitServer,"..\packages\FitSharp.2.8.2\lib\net462\fit.dll" %p}
+!define TEST_RUNNER {..\packages\FitSharp.2.8.2\lib\net462\Runner.exe}
+!path "..\BusinessLayer\bin\Release\BusinessLayer.exe"
+
+
+!|ActionFixture|
+|start|BusinessLayer.Tests.fitnesse.MockFitness|
+|enter|MockUser|[{"Id": 1,"Login": "Admin","Password": "Pass","Rank": 0},{"Id": 2,"Login": "Student","Password": "Pass","Rank": 1}]|
+|enter|MockStudentData|[{"Id": 1,"UserId": 2}]|
+|enter|MockField|[{"Id": 1}]|
+|enter|MockCourseGroup|[{"Id": 1}]|
+|press|SetMock|
+
+!|BusinessLayer.Tests.fitnesse.EditCourseGroupTest|
+|Login  |Password|LoginUser?|Id|Ects|Semester|FieldId|Code   |Name |EditCourseGroup?|getLastMessage|#Comment                           |LogOut|
+|Admin  |Pass    |True      |1 |12  |1 		 |1      |INE009 |PP   |True            |              |Pomyślnie dodano groupę kursów     |      |
+|Student|Pass    |True      |1 |12  |1 		 |1      |INE009 |PP   |False           |              |Nieprawidłowy użytkownik           |      |
+|Admin  |Pass    |True      |2 |12  |1 		 |1      |INE009 |PP   |False           |              |Nieprawidłowa grupa kursów         |      |
+|Admin  |Pass    |True      |1 |as  |1 		 |1      |INE009 |PP   |False           |              |ECTS są ciągiem znaków             |      |
+|Admin  |Pass    |True      |1 |-12 |1 		 |1      |INE009 |PP   |False           |              |ECTS są ujemne                     |      |
+|Admin  |Pass    |True      |1 |12  |-1		 |1      |INE009 |PP   |False           |              |Semest jest ujemny                 |      |
+|Admin  |Pass    |True      |1 |12  |asd 	 |1      |INE009 |PP   |False           |              |Semestr jest ciągiem znaków        |      |
+|Admin  |Pass    |True      |1 |12  |1 		 |asd    |INE009 |PP   |False           |              |Kierunek jest ciągiem znaków       |      |
+|Admin  |Pass    |True      |1 |12  |1 		 |2      |INE009 |PP   |False           |              |Kierunek nie istnieje              |      |
+|Admin  |Pass    |True      |1 |12  |1 		 |1      |blank  |PP   |False           |              |Pusty kod groupy kursów            |      |
+|Admin  |Pass    |True      |1 |12  |1 		 |1      |INE009 |blank|False           |              |Pustaa nazwa grupy kursów          |      |

@@ -61,11 +61,14 @@ namespace BusinessLayer.Controllers
             if (CheckRank(token) != Rank.Administrator)
                 return (false, "Tylko administrator może dodać nowe konto");
 
-            if (!Enum.TryParse<Rank>(data["rank"], out var newUserRank) || newUserRank==Rank.None) // parsowanie stringa na enuma
+            if (!Enum.TryParse<Rank>(data["rank"], out var newUserRank) || newUserRank == Rank.None
+            ) // parsowanie stringa na enuma
                 return (false, "Niepoprawna ranga nowego użytkownika");
 
             var newLogin = data["login"];
-
+            var isLoginUsed = new RepositoryFactory().GetRepository<User>().GetDetail(u => u.Login == newLogin) != null;
+            if (isLoginUsed)
+                return (false, "Wpisany login jest już zajęty");
             string password;
             using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())
             {
@@ -84,11 +87,13 @@ namespace BusinessLayer.Controllers
             userRepo.Add(newUser);
             if (newUserRank == Rank.Student)
             {
-                var firstName = data["firstName"];
-                var lastName = data["lastName"];
+                string firstName;
+                string lastName;
                 int index, fieldId, semester;
                 try
                 {
+                    firstName = data["firstName"];
+                    lastName = data["lastName"];
                     index = int.Parse(data["index"]);
                     fieldId = int.Parse(data["fieldId"]);
                     semester = int.Parse(data["semester"]);
@@ -98,6 +103,11 @@ namespace BusinessLayer.Controllers
                     Console.WriteLine(e);
                     return (false, e.Message);
                 }
+
+                var isFieldCorrect = new RepositoryFactory().GetRepository<Field>().GetDetail(f => f.Id == fieldId) != null;
+                if (!isFieldCorrect)
+                    return (false, "Niepoprawne ID kierunku");
+
                 var studentData = new StudentData
                 {
                     FieldId = fieldId,
@@ -122,7 +132,8 @@ namespace BusinessLayer.Controllers
 
             if (!data.ContainsKey("dateStart") || !DateTime.TryParse(data["dateStart"], out DateTime dateStart))
                 return (false, "Nieprawidłowa data rozpoczęcia zapisów");
-            if (!data.ContainsKey("dateEnd") || !DateTime.TryParse(data["dateEnd"], out DateTime dateEnd) || dateEnd < dateStart)
+            if (!data.ContainsKey("dateEnd") || !DateTime.TryParse(data["dateEnd"], out DateTime dateEnd) ||
+                dateEnd < dateStart)
                 return (false, "Nieprawidłowa data zakończenia zapisów");
 
             var sdRepository = new RepositoryFactory().GetRepository<StudentData>();
@@ -132,7 +143,7 @@ namespace BusinessLayer.Controllers
             foreach (var student in studentData)
             {
                 student.RegistrationDate =
-                    dateStart + new TimeSpan(0, random.Next(0, (int)span.TotalMinutes), 0);
+                    dateStart + new TimeSpan(0, random.Next(0, (int) span.TotalMinutes), 0);
             }
 
             sdRepository.SaveChanges();

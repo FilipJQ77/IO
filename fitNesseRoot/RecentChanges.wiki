@@ -1,4 +1,11 @@
-|FrontPage.User_login||21:18:50 Cz, sty 21, 2021|
-|FrontPage.Add_Account||19:25:47 Cz, sty 21, 2021|
+|FrontPage.Add_Account||22:02:35 Cz, sty 21, 2021|
+|FrontPage.User_login||22:01:10 Cz, sty 21, 2021|
+|FrontPage.Edit_CourseGroup||21:57:49 Cz, sty 21, 2021|
+|FrontPage.Assign_Registration_Dates||21:27:29 Cz, sty 21, 2021|
+<<<<<<< HEAD
+=======
+|FrontPage.User_Logout||20:55:35 Cz, sty 21, 2021|
+|FrontPage.Logout||20:34:44 Cz, sty 21, 2021|
+>>>>>>> 60c8a10014fa074595b5330132ad39a7c3082f96
 |FrontPage||19:25:17 Cz, sty 21, 2021|
 |FrontPage.test||19:23:20 Cz, sty 21, 2021|

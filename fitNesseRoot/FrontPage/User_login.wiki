@@ -13,9 +13,10 @@ Test
 |press|SetMock|
 
 !|BusinessLayer.Tests.fitnesse.LoginTest|
-|Login|Password|LoginUser?|getLastMessage|#Comment|
-|Admin|Pass|True||Pomyślne zalogowanie administratora|
-|Admin|Pass|False||Logowanie drugi raz tego samego użytkownika|
-|Student|Pass|True||Pomyślne zalogowanie studenta|
-|Student|Pass|False||Logowanie drugi raz tego samego użytkownika|
-|Asd|Asd|False||Użytkownik nie istnieje|
+|Login  |Password|LoginUser?|getLastMessage|#Comment                                   |
+|Admin  |Pass    |True      |              |Pomyślne zalogowanie administratora        |
+|Admin  |Pass    |False     |              |Logowanie drugi raz tego samego użytkownika|
+|Student|Pass    |True      |              |Pomyślne zalogowanie studenta              |
+|Student|Pass    |False     |              |Logowanie drugi raz tego samego użytkownika|
+|Asd    |Asd     |False     |              |Użytkownik nie istnieje                    |
+|blank  |blank   |False     |              |Pusty login i hasło                        |

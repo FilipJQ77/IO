@@ -22,7 +22,6 @@ namespace BusinessLayer.Tests.fitnesse
             });
 
             lastMessage = ms;
-
             return passed;
         }
 
